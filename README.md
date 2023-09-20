@@ -1,5 +1,5 @@
 
-# Bookorama (PBP)
+# Bookorama (PBP/Pria Bibir Pink)
 
 Bookorama is an web application that simplifies book management and borrowing. With Bookorama, users can easily explore an extensive catalog of books, and make reservations.
 
