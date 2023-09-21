@@ -14,10 +14,29 @@
             </tr>
             <?php
             // TODO 1: Buat koneksi dengan database
+            require_once('../Bookorama-App/lib/db_login.php');
 
             // TODO 2: Tulis dan eksekusi query ke database
+            $query = 'SELECT * FROM customers ORDER BY customerid';
+            $result = $db->query($query);
+            if (!$result) {
+                die('Tidak dapat terhubung dengan database');
+            }
 
             // TODO 3: Parsing data yang diterima dari database ke halaman HTML/PHP
+            $i = 1;
+            while ($row = $result->fetch_object()) {
+                echo '<tr>';    
+                echo '<td>' . $i . '</td>';
+                echo '<td>' . $row->name . '</td>';
+                echo '</tr>';
+                $i++;
+            }
+            echo '</table>';
+            echo '<br/>';
+            echo 'Total baris = ' . $result->num_rows;
+            $result->free();
+            $db->close();
 
             // TODO 4: Lakukan dealokasi variabel $result
 
