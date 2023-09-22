@@ -3,7 +3,24 @@ require_once('../lib/db_login.php');
 
 $isbn = $_GET['isbn'];
 
-if (isset($_POST['submit'])) {
+if (!isset($_POST['submit'])) {
+    $query = "SELECT b.isbn, b.author, b.title, b.price, c.name AS category_name 
+                    FROM books b
+                    INNER JOIN categories AS c ON b.categoryid = c.categoryid
+                    WHERE b.isbn='" . $isbn . "'";
+    $result = $db->query($query);
+    if (!$result) {
+        die("Could not query the database: <br />" . $db->error);
+    } else {
+        while ($row = $result->fetch_object()) {
+            $isbn = $row->isbn;
+            $author = $row->author;
+            $title = $row->title;
+            $price = $row->price;
+            $category = $row->category_name;
+        }
+    }
+} else {
     $valid = TRUE;
 
     $isbn = test_input($_POST['isbn']);
@@ -37,88 +54,80 @@ if (isset($_POST['submit'])) {
     }
 
     if ($valid) {
-        // Kueri
         $query = "UPDATE books 
                     SET isbn = '" . $isbn . "', 
-                        author = '" . $author . "', 
-                        title = '" . $title . "', 
-                        price = '" . $price . "', 
+                        author = '" . $author . "',
+                        title = '" . $title . "',
+                        price = '" . $price . "',
                         categoryid = (SELECT categoryid FROM categories WHERE name = '" . $category . "')
                     WHERE isbn = '" . $isbn . "'
                 ";
-
-        // Eksekusi kueri
         $result = $db->query($query);
         if (!$result) {
-            die('Could not query the database: <br/>' . $db->error . '<br>Query:' . $query);
+            die("Could not query the database: <br />" . $db->error . '<br>Query: ' . $query);
         } else {
             $db->close();
             header('Location: view_books.php');
         }
     }
-} else {
-    $query = 'SELECT * FROM books WHERE isbn=' . $isbn . ' ';
-    $result = $db->query($query);
-    if (!$result) {
-        die('Could not query the database: <br/>' . $db->error . '<br>Query:' . $query);
-    } else {
-        while ($row = $result->fetch_object()) {
-            $isbn = $row->isbn;
-            $author = $row->author;
-            $title = $row->title;
-            $price = $row->price;
-            $categoryid = $row->categoryid;
-        }
-    }
 }
+
 ?>
 <?php include('../header.php') ?>
 <br>
 <div class="card mt-4">
     <div class="card-header">Edit Book Data</div>
     <div class="card-body">
-        <form action="edit_book.php" method="POST" autocomplete="on">
+        <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']) . '?isbn=' . $isbn ?>" method="post" autocomplete="on">
             <div class="form-group">
                 <label for="isbn">ISBN:</label>
-                <input type="text" class="form-control" id="isbn" name="isbn" value="<?= $isbn ?>">
+                <input type="text" class="form-control" id="isbn" name="isbn" value="<?= $isbn; ?>">
                 <div class="error">
-                    <?php if (isset($error_isbn))
-                        echo $error_isbn ?>
+                    <?php if (isset($error_isbn)) echo $error_isbn ?>
                 </div>
             </div>
             <div class="form-group">
                 <label for="author">Author:</label>
-                <input type="text" class="form-control" id="author" name="author" value="<?= $author ?>">
+                <input type="text" class="form-control" id="author" name="author" value="<?= $author; ?>">
                 <div class="error">
-                    <?php if (isset($error_author))
-                        echo $error_author ?>
+                    <?php if (isset($error_author)) echo $error_author ?>
                 </div>
             </div>
             <div class="form-group">
                 <label for="title">Title:</label>
-                <input type="text" class="form-control" id="title" name="title" value="<?= $title ?>">
+                <input type="text" class="form-control" id="title" name="title" value="<?= $title; ?>">
                 <div class="error">
-                    <?php if (isset($error_title))
-                        echo $error_title ?>
+                    <?php if (isset($error_title)) echo $error_title ?>
                 </div>
             </div>
             <div class="form-group">
                 <label for="price">Price:</label>
-                <input type="number" class="form-control" id="price" name="price" step="0.01" value="<?= $price ?>">
+                <input type="number" class="form-control" id="price" name="price" step="0.01" value="<?= $price; ?>">
                 <div class="error">
-                    <?php if (isset($error_price))
-                        echo $error_price ?>
+                    <?php if (isset($error_price)) echo $error_price ?>
                 </div>
             </div>
             <div class="form-group">
                 <label for="category">Category:</label>
                 <select name="category" id="category" class="form-control">
                     <option value="" selected disabled>--Select a Category--</option>
-                    <option value="Computer" <?php if (isset($category) && $category == "Computer") echo 'selected' ?>>Computer</option>
-                    <option value="Design" <?php if (isset($category) && $category == "Design") echo 'selected' ?>>Design</option>
-                    <option value="Fiction" <?php if (isset($category) && $category == "Fiction") echo 'selected' ?>>Fiction</option>
-                    <option value="Cooking" <?php if (isset($category) && $category == "Cooking") echo 'selected' ?>>Cooking</option>
-                    <option value="Architecture" <?php if (isset($category) && $category == "Architecture") echo 'selected' ?>>Architecture</option>
+                    <?php
+                    $query = 'SELECT name FROM categories';
+                    $result = $db->query($query);
+
+                    if ($result) {
+                        while ($row = $result->fetch_assoc()) {
+                            $categoryName = $row['name'];
+                            $isSelected = ($category == $categoryName) ? 'selected' : '';
+
+                            echo "<option value=\"$categoryName\" $isSelected>$categoryName</option>";
+                        }
+
+                        $result->free_result();
+                    } else {
+                        echo 'Error:' . $db->error;
+                    }
+                    ?>
                 </select>
                 <div class="error">
                     <?php if (isset($error_category))

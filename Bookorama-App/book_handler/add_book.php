@@ -97,11 +97,21 @@ if (isset($_POST['submit'])) {
                 <label for="category">Category:</label>
                 <select name="category" id="category" class="form-control">
                     <option value="" selected disabled>--Select a Category--</option>
-                    <option value="Computer">Computer</option>
-                    <option value="Design">Design</option>
-                    <option value="Fiction">Fiction</option>
-                    <option value="Cooking">Cooking</option>
-                    <option value="Architecture">Architecture</option>
+                    <?php
+                    $query = 'SELECT name FROM categories';
+                    $result = $db->query($query);
+
+                    if ($result) {
+                        while ($row = $result->fetch_assoc()) {
+                            $categoryName = $row['name'];
+                            echo "<option value=\"$categoryName\">$categoryName</option>";
+                        }
+
+                        $result->free_result();
+                    } else {
+                        echo 'Error:' . $db->error;
+                    }
+                    ?>
                 </select>
                 <div class="error">
                     <?php if (isset($error_category))
