@@ -17,7 +17,7 @@
             require_once('../Bookorama-App/lib/db_login.php');
 
             // TODO 2: Tulis dan eksekusi query ke database
-            $query = 'SELECT * FROM customers ORDER BY customerid';
+            $query = 'SELECT customerid AS id, name As Nama, address AS Alamat, city AS Kota FROM customers ORDER BY customerid';
             $result = $db->query($query);
             if (!$result) {
                 die('Tidak dapat terhubung dengan database');
@@ -26,9 +26,15 @@
             // TODO 3: Parsing data yang diterima dari database ke halaman HTML/PHP
             $i = 1;
             while ($row = $result->fetch_object()) {
-                echo '<tr>';    
+                echo '<tr>';
                 echo '<td>' . $i . '</td>';
-                echo '<td>' . $row->name . '</td>';
+                echo '<td>' . $row->Nama . '</td>';
+                echo '<td>' . $row->Alamat . '</td>';
+                echo '<td>' . $row->Kota . '</td>';
+
+                echo '<td><a class="btn btn-warning btn-sm" href="edit_customer.php?id=' . $row->id . '">Edit</a>&nbsp;&nbsp;
+<a class="btn btn-danger btn-sm" href="confirm_delete_customer.php?id=' . $row->id . '">Delete</a>
+</td>';
                 echo '</tr>';
                 $i++;
             }
@@ -39,7 +45,7 @@
             $db->close();
 
             // TODO 4: Lakukan dealokasi variabel $result
-
+            
             // TODO 5: Tutup koneksi dengan database
             ?>
     </div>
