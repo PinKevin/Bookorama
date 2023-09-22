@@ -1,9 +1,9 @@
-<?php 
+<?php
 session_start();
-if(!isset($_SESSION['username'])){
+if (!isset($_SESSION['username'])) {
     header('Location: login.php');
 }
-include('../header.html') ?>
+include('./header.php') ?>
 <br>
 <div class="card">
     <div class="card-header">Admin Page</div>

@@ -1,35 +1,35 @@
 <?php
-session_start(); 
 require_once('../Bookorama-App/lib/db_login.php');
+session_start();
 
-if (isset($_POST["submit"])){
-    $valid = TRUE; 
+if (isset($_POST["submit"])) {
+    $valid = TRUE;
     $email = ($_POST['email']);
-    if ($email == ''){
+    if ($email == '') {
         $error_email = "Email is required";
         $valid = FALSE;
-    } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
+    } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error_email = "Invalid email format";
         $valid = FALSE;
     }
 
     $password = md5(($_POST['password']));
-    if ($password == ''){
+    if ($password == '') {
         $error_password = "Password is required";
         $valid = FALSE;
     }
 
-    if ($valid){
-        $query = " SELECT * FROM admin WHERE email='".$email."' AND password='".$password."' ";
+    if ($valid) {
+        $query = " SELECT * FROM admin WHERE email='" . $email . "' AND password='" . $password . "' ";
         $result = $db->query($query);
-        if (!$result){
-            die ("Could not query the database: <br />". $db->error);
-        } else{
-            if ($result->num_rows > 0){
+        if (!$result) {
+            die("Could not query the database: <br />" . $db->error);
+        } else {
+            if ($result->num_rows > 0) {
                 $_SESSION['username'] = $email;
-                header('Location: view_customer.php');
+                header('Location: admin.php');
                 exit;
-            } else{
+            } else {
                 echo '<span class="error">Combination of email and password are not correct.</span>';
             }
         }
