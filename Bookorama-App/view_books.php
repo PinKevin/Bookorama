@@ -12,10 +12,32 @@
             </tr>
             <?php
             // Include our login information
-            require_once('./lib/db_login.php');
+            require_once('../Bookorama-App/lib/db_login.php');
 
             // TODO 1: Tuliskan dan eksekusi query
+            $query = 'SELECT * FROM books ORDER BY isbn';
+            $result = $db->query($query);
+            if (!$result) {
+                die('Tidak dapat terhubung dengan database');
+            }
 
+            $i = 1;
+            while ($row = $result->fetch_object()) {
+                echo '<tr>';
+                echo '<td>' . $row->isbn . '</td>';
+                echo '<td>' . $row->author . '</td>';
+                echo '<td>' . $row->title . '</td>';
+                echo '<td>$' . $row->price . '</td>';
+                echo '<td><a class="btn btn-primary btn-sm" href="show_cart.php?id=' . $row->isbn . '">Add to Cart</a></td>';
+                echo '</tr>';
+                $i++;
+            }
+            echo '</table>';
+            echo '<br />';
+            echo 'Total Rows = ' . $result->num_rows;
+
+            $result->free();
+            $db->close();
             ?>
     </div>
 </div>
