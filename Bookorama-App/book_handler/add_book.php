@@ -1,5 +1,5 @@
 <?php
-require_once('../Bookorama-App/lib/db_login.php');
+require_once('../lib/db_login.php');
 
 if (isset($_POST['submit'])) {
     $valid = TRUE;
@@ -55,7 +55,7 @@ if (isset($_POST['submit'])) {
     }
 }
 ?>
-<?php include('./header.php') ?>
+<?php include('../header.php') ?>
 <br>
 <div class="card mt-4">
     <div class="card-header">Add Book Data</div>
@@ -114,7 +114,7 @@ if (isset($_POST['submit'])) {
         </form>
     </div>
 </div>
-<?php include('./footer.php') ?>
+<?php include('../footer.php') ?>
 <?php
 $db->close();
 ?>

@@ -1,4 +1,4 @@
-<?php include('./header.php') ?>
+<?php include('../header.php') ?>
 <div class="card mt-5">
     <div class="card-header">Books Data</div>
     <div class="card-body">
@@ -15,13 +15,22 @@
             </tr>
             <?php
             // Include our login information
-            require_once('../Bookorama-App/lib/db_login.php');
+            require_once('../lib/db_login.php');
 
             // TODO 1: Tuliskan dan eksekusi query
-            $query = 'SELECT isbn, title, categoryid, author, price FROM books ORDER BY isbn';
+            $query = 'SELECT 
+                            books.isbn, 
+                            books.title, 
+                            categories.name AS category_name, 
+                            books.author, 
+                            books.price 
+                        FROM books 
+                        INNER JOIN categories ON books.categoryid = categories.categoryid
+                        ORDER BY books.isbn
+                    ';
             $result = $db->query($query);
             if (!$result) {
-                die('Tidak dapat terhubung dengan database');
+                die('Could not query the database: <br/>' . $db->error . '<br>Query:' . $query);
             }
 
             $i = 1;
@@ -29,7 +38,7 @@
                 echo '<tr>';
                 echo '<td>' . $row->isbn . '</td>';
                 echo '<td>' . $row->title . '</td>';
-                echo '<td>' . $row->categoryid . '</td>';
+                echo '<td>' . $row->category_name . '</td>';
                 echo '<td>' . $row->author . '</td>';
                 echo '<td>' . $row->price . '</td>';
                 echo '<td>';
@@ -51,4 +60,4 @@
             ?>
     </div>
 </div>
-<?php include('./footer.php') ?>
+<?php include('../footer.php') ?>
