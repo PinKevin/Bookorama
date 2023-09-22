@@ -44,7 +44,7 @@
                 echo '<td>';
                 echo '<a class="btn btn-warning btn-sm" href="edit_book.php?isbn='
                     . $row->isbn . '">Edit</a>&nbsp;&nbsp';
-                echo '<a class="btn btn-danger btn-sm" href="confirm_delete_customer.php?id='
+                echo '<a class="btn btn-danger btn-sm" href="confirm_delete_book.php?isbn='
                     . $row->isbn . '">Delete</a>';
                 echo '</td>';
                 // echo '<td><a class="btn btn-primary btn-sm" href="show_cart.php?id=' . $row->isbn . '">Add to Cart</a></td>';
