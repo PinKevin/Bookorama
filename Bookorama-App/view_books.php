@@ -2,6 +2,8 @@
 <div class="card mt-5">
     <div class="card-header">Books Data</div>
     <div class="card-body">
+        <a href="add_book.php" class="btn btn-primary mb-4">+ Add Book Data</a>
+        <br>
         <table class="table table-striped">
             <tr>
                 <th>ISBN</th>
@@ -33,7 +35,7 @@
                 echo '<td>';
                 echo '<a class="btn btn-warning btn-sm" href="edit_customer.php?id='
                     . $row->isbn . '">Edit</a>&nbsp;&nbsp';
-                echo '<a class="btn btn-danger btn-sm" href="confirm_delete_customer.php?id=' 
+                echo '<a class="btn btn-danger btn-sm" href="confirm_delete_customer.php?id='
                     . $row->isbn . '">Delete</a>';
                 echo '</td>';
                 // echo '<td><a class="btn btn-primary btn-sm" href="show_cart.php?id=' . $row->isbn . '">Add to Cart</a></td>';
