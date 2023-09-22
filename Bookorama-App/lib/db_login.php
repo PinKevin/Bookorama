@@ -11,6 +11,10 @@ if ($db->connect_errno) {
     die("Tidak dapat terhubung dengan database : <br/>" . $db->connect_error);
 }
 
-// TODO 2: Buatlah function test_input
-
+function test_input($data){
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
 ?>
