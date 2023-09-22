@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 15 Sep 2022 pada 18.00
--- Versi server: 10.4.21-MariaDB
--- Versi PHP: 8.0.10
+-- Generation Time: Sep 22, 2023 at 05:50 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,23 +18,23 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `bookorama`
+-- Database: `bookorama_kelas`
 --
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `admin`
+-- Table structure for table `admin`
 --
 
 CREATE TABLE `admin` (
   `adminid` int(11) NOT NULL,
   `email` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Dumping data untuk tabel `admin`
+-- Dumping data for table `admin`
 --
 
 INSERT INTO `admin` (`adminid`, `email`, `password`) VALUES
@@ -43,40 +43,41 @@ INSERT INTO `admin` (`adminid`, `email`, `password`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `books`
+-- Table structure for table `books`
 --
 
 CREATE TABLE `books` (
   `isbn` varchar(13) NOT NULL,
   `author` varchar(50) DEFAULT NULL,
   `title` varchar(100) DEFAULT NULL,
-  `price` float(4,2) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `price` float(4,2) DEFAULT NULL,
+  `categoryid` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Dumping data untuk tabel `books`
+-- Dumping data for table `books`
 --
 
-INSERT INTO `books` (`isbn`, `author`, `title`, `price`) VALUES
-('0-672-31697-8', 'Michael Morgan', 'Java 2 for Professional Developers', 34.99),
-('0-672-31745-1', 'Thomas Down', 'Installing Debian GNU/Linux', 24.99),
-('0-672-31509-2', 'Pruitt, et al.', 'Teach Yourself GIMP in 24 Hours', 24.99),
-('0-672-31769-9', 'Thomas Schenk', 'Caldera OpenLinux System Administration Unleashed', 49.99),
-('0-672-31281-1', 'Clarita Michelle', 'Jakarta dan Debu Adalah Kawan', 66.99);
+INSERT INTO `books` (`isbn`, `author`, `title`, `price`, `categoryid`) VALUES
+('0-672-31697-8', 'Michael Morgan', 'Java 2 for Professional Developers', 34.99, 1),
+('0-672-31745-1', 'Thomas Down', 'Installing Debian GNU/Linux', 24.99, 1),
+('0-672-31509-2', 'Pruitt, et al.', 'Teach Yourself GIMP in 24 Hours', 24.99, 2),
+('0-672-31769-9', 'Thomas Schenk', 'Caldera OpenLinux System Administration Unleashed', 49.99, 1),
+('0-672-31281-1', 'Clarita Michelle', 'Jakarta dan Debu Adalah Kawan', 66.99, 3);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `book_reviews`
+-- Table structure for table `book_reviews`
 --
 
 CREATE TABLE `book_reviews` (
   `isbn` char(13) NOT NULL,
   `review` text DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Dumping data untuk tabel `book_reviews`
+-- Dumping data for table `book_reviews`
 --
 
 INSERT INTO `book_reviews` (`isbn`, `review`) VALUES
@@ -85,7 +86,29 @@ INSERT INTO `book_reviews` (`isbn`, `review`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `customers`
+-- Table structure for table `categories`
+--
+
+CREATE TABLE `categories` (
+  `categoryid` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`categoryid`, `name`) VALUES
+(1, 'Computer'),
+(2, 'Design'),
+(3, 'Fiction'),
+(4, 'Cooking'),
+(5, 'Architecture');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customers`
 --
 
 CREATE TABLE `customers` (
@@ -93,10 +116,10 @@ CREATE TABLE `customers` (
   `name` varchar(50) NOT NULL,
   `address` varchar(100) NOT NULL,
   `city` varchar(30) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Dumping data untuk tabel `customers`
+-- Dumping data for table `customers`
 --
 
 INSERT INTO `customers` (`customerid`, `name`, `address`, `city`) VALUES
@@ -110,7 +133,7 @@ INSERT INTO `customers` (`customerid`, `name`, `address`, `city`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `orders`
+-- Table structure for table `orders`
 --
 
 CREATE TABLE `orders` (
@@ -118,10 +141,10 @@ CREATE TABLE `orders` (
   `customerid` int(10) UNSIGNED NOT NULL,
   `amount` float(6,2) DEFAULT NULL,
   `date` date NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Dumping data untuk tabel `orders`
+-- Dumping data for table `orders`
 --
 
 INSERT INTO `orders` (`orderid`, `customerid`, `amount`, `date`) VALUES
@@ -133,17 +156,17 @@ INSERT INTO `orders` (`orderid`, `customerid`, `amount`, `date`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `order_items`
+-- Table structure for table `order_items`
 --
 
 CREATE TABLE `order_items` (
   `orderid` int(10) UNSIGNED NOT NULL,
   `isbn` char(13) NOT NULL,
   `quantity` tinyint(3) UNSIGNED DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Dumping data untuk tabel `order_items`
+-- Dumping data for table `order_items`
 --
 
 INSERT INTO `order_items` (`orderid`, `isbn`, `quantity`) VALUES
@@ -158,59 +181,66 @@ INSERT INTO `order_items` (`orderid`, `isbn`, `quantity`) VALUES
 --
 
 --
--- Indeks untuk tabel `admin`
+-- Indexes for table `admin`
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`adminid`);
 
 --
--- Indeks untuk tabel `books`
+-- Indexes for table `books`
 --
 ALTER TABLE `books`
-  ADD PRIMARY KEY (`isbn`);
+  ADD PRIMARY KEY (`isbn`),
+  ADD KEY `fk_books_categoryid` (`categoryid`);
 
 --
--- Indeks untuk tabel `book_reviews`
+-- Indexes for table `book_reviews`
 --
 ALTER TABLE `book_reviews`
   ADD PRIMARY KEY (`isbn`);
 
 --
--- Indeks untuk tabel `customers`
+-- Indexes for table `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`categoryid`);
+
+--
+-- Indexes for table `customers`
 --
 ALTER TABLE `customers`
   ADD PRIMARY KEY (`customerid`);
 
 --
--- Indeks untuk tabel `orders`
+-- Indexes for table `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`orderid`);
 
 --
--- Indeks untuk tabel `order_items`
+-- Indexes for table `order_items`
 --
 ALTER TABLE `order_items`
   ADD PRIMARY KEY (`orderid`,`isbn`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `admin`
+-- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
   MODIFY `adminid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT untuk tabel `customers`
+-- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
   MODIFY `customerid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
 
 --
--- AUTO_INCREMENT untuk tabel `orders`
+-- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
   MODIFY `orderid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
