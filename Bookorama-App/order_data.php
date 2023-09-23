@@ -44,7 +44,7 @@ if (isset($_GET['id']) && $_GET['id'] != "") {
         $order_number = 0; // Inisialisasi nomor order
         $order_date = date("Y-m-d");
         
-        if (is_array($_SESSION['cart'])) {
+        if (isset($_POST['start_date']) && isset($_POST['end_date'])) {
             foreach ($_SESSION['cart'] as $id => $quantity) {
                 $query = "SELECT * FROM books WHERE isbn='" . $id . "'";
                 $result = $db->query($query);
