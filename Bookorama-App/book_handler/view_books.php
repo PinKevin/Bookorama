@@ -2,6 +2,7 @@
 include('../header.php');
 require_once('../lib/db_login.php');
 ?>
+
 <div class="card mt-5">
     <div class="card-header">Books Data</div>
     <div class="card-body">
@@ -28,16 +29,129 @@ require_once('../lib/db_login.php');
                         echo 'Error: ' . $db->error;
                     }
                     ?>
-                    <input type="number" class="form-control mb-2" name="min_price" placeholder="Min Price" step="0.01">
-                    <input type="number" class="form-control mb-2" name="max_price" placeholder="Max Price" step="0.01">
-                    <button class="btn btn-primary" type="submit">Search</button>
                 </select>
+                <input type="number" class="form-control mb-2" name="min_price" placeholder="Min Price" step="0.01">
+                <input type="number" class="form-control mb-2" name="max_price" placeholder="Max Price" step="0.01">
+                <button class="btn btn-primary" type="submit">Search</button>
             </form>
         </div>
         <br>
+
         <?php
-        // TODO 1: Tuliskan dan eksekusi query
-        $query = 'SELECT 
+        // Inisialisasi variabel pencarian
+        $searched = false;
+
+        // Memeriksa apakah ada parameter pencarian yang diberikan
+        if (
+            isset($_GET['search_key']) ||
+            isset($_GET['category']) ||
+            isset($_GET['min_price']) ||
+            isset($_GET['max_price'])
+        ) {
+            $searched = true;
+        }
+        ?>
+
+        <?php if ($searched) : ?>
+            <?php
+            // TODO 1: Tuliskan dan eksekusi query
+            $query = 'SELECT 
+                                books.isbn, 
+                                books.title, 
+                                categories.name AS category_name, 
+                                books.author, 
+                                books.price 
+                            FROM books 
+                            INNER JOIN categories ON books.categoryid = categories.categoryid
+                        ';
+
+            $search_key = '';
+            $category_filter = '';
+            $min_price = '';
+
+            if (isset($_GET['search_key']) && !empty($_GET['search_key'])) {
+                $search_key = $_GET['search_key'];
+                $query .= " WHERE (books.isbn LIKE '%$search_key%' 
+                                OR books.title LIKE '%$search_key%'
+                                OR books.author LIKE '%$search_key%')";
+            }
+
+            if (isset($_GET['category']) && !empty($_GET['category'])) {
+                $category_filter = $_GET['category'];
+                if ($search_key != '') {
+                    $query .= " AND categories.name = '$category_filter'";
+                } else {
+                    $query .= " WHERE categories.name = '$category_filter'";
+                }
+            }
+
+            if (isset($_GET['min_price']) && !empty($_GET['min_price'])) {
+                $min_price = $_GET['min_price'];
+                if ($search_key != '' || $category_filter != '') {
+                    $query .= " AND books.price >= '$min_price'";
+                } else {
+                    $query .= " WHERE books.price >= '$min_price'";
+                }
+            }
+
+            if (isset($_GET['max_price']) && !empty($_GET['max_price'])) {
+                $max_price = $_GET['max_price'];
+                if ($search_key != '' || $category_filter != '' || $min_price != '') {
+                    $query .= " AND books.price <= '$max_price'";
+                } else {
+                    $query .= " WHERE books.price <= '$max_price'";
+                }
+            }
+
+            $query .= ' ORDER BY books.isbn';
+
+            $result = $db->query($query);
+            if (!$result) {
+                die('Could not query the database: <br/>' . $db->error . '<br>Query:' . $query);
+            }
+            ?>
+
+            <?php if ($result->num_rows > 0) : ?>
+                <table class="table table-striped">
+                    <tr>
+                        <th>ISBN</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Author</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+
+                    <?php
+                    $i = 1;
+                    while ($row = $result->fetch_object()) :
+                    ?>
+                        <tr>
+                            <td><?= $row->isbn ?></td>
+                            <td><?= $row->title ?></td>
+                            <td><?= $row->category_name ?></td>
+                            <td><?= $row->author ?></td>
+                            <td>$<?= $row->price ?></td>
+                            <td>
+                                <a class="btn btn-warning btn-sm" href="edit_book.php?isbn=<?= $row->isbn ?>">Edit</a>&nbsp;&nbsp;
+                                <a class="btn btn-danger btn-sm" href="confirm_delete_book.php?isbn=<?= $row->isbn ?>">Delete</a>
+                            </td>
+                        </tr>
+                    <?php
+                        $i++;
+                    endwhile;
+                    ?>
+
+                </table>
+                <br />
+                Total Rows = <?= $result->num_rows ?>
+            <?php else : ?>
+                <div class="alert alert-warning">Book not found!</div>
+            <?php endif; ?>
+        <?php else : ?>
+            <?php
+            // Tampilkan semua data jika tidak ada parameter pencarian
+            $query = 'SELECT 
                             books.isbn, 
                             books.title, 
                             categories.name AS category_name, 
@@ -45,122 +159,49 @@ require_once('../lib/db_login.php');
                             books.price 
                         FROM books 
                         INNER JOIN categories ON books.categoryid = categories.categoryid
-                    ';
+                        ORDER BY books.isbn';
 
-        $searched = false;
-
-        if (isset($_GET['search_key']) && !empty($_GET['search_key'])) {
-            $searched = true;
-            $search_key = $_GET['search_key'];
-            $query .= " WHERE (books.isbn LIKE '%$search_key%' 
-                            OR books.title LIKE '%$search_key%'
-                            OR books.author LIKE '%$search_key%')";
-        }
-
-        if (isset($_GET['category']) && !empty($_GET['category'])) {
-            $category_filter = $_GET['category'];
-            if ($searched) {
-                $query .= " AND categories.name = '$category_filter'";
-            } else {
-                $query .= " WHERE categories.name = '$category_filter'";
+            $result = $db->query($query);
+            if (!$result) {
+                die('Could not query the database: <br/>' . $db->error . '<br>Query:' . $query);
             }
-        }
+            ?>
 
-        if (isset($_GET['min_price']) && !empty($_GET['min_price'])) {
-            $min_price = $_GET['min_price'];
-            if ($searched) {
-                $query .= " AND books.price >= '$min_price'";
-            } else {
-                $query .= " WHERE books.price >= '$min_price'";
-            }
-        }
-
-        if (isset($_GET['max_price']) && !empty($_GET['max_price'])) {
-            $max_price = $_GET['max_price'];
-            if ($searched) {
-                $query .= " AND books.price <= '$max_price'";
-            } else {
-                $query .= " WHERE books.price <= '$max_price'";
-            }
-        }
-
-        $query .= ' ORDER BY books.isbn';
-
-        $result = $db->query($query);
-        if (!$result) {
-            die('Could not query the database: <br/>' . $db->error . '<br>Query:' . $query);
-        }
-        ?>
-
-        <?php if ($result->num_rows > 0) : ?>
-            <table class="table table-striped">
-                <tr>
-                    <th>ISBN</th>
-                    <th>Title</th>
-                    <th>Category</th>
-                    <th>Author</th>
-                    <th>Price</th>
-                    <th>Action</th>
-                </tr>
-
-                <?php
-                $i = 1;
-                while ($row = $result->fetch_object()) :
-                ?>
+            <?php if ($result->num_rows > 0) : ?>
+                <table class="table table-striped">
                     <tr>
-                        <td><?= $row->isbn ?></td>
-                        <td><?= $row->title ?></td>
-                        <td><?= $row->category_name ?></td>
-                        <td><?= $row->author ?></td>
-                        <td>$<?= $row->price ?></td>
-                        <td>
-                            <a class="btn btn-warning btn-sm" href="edit_book.php?isbn=<?= $row->isbn ?>">Edit</a>&nbsp;&nbsp;
-                            <a class="btn btn-danger btn-sm" href="confirm_delete_book.php?isbn=<?= $row->isbn ?>">Delete</a>
-                        </td>
+                        <th>ISBN</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Author</th>
+                        <th>Price</th>
+                        <th>Action</th>
                     </tr>
-                <?php
-                    $i++;
-                endwhile;
-                ?>
 
-            </table>
-            <br />
-            Total Rows = <?= $result->num_rows ?>
-        <?php elseif (!$searched) : ?>
-            <table class="table table-striped">
-                <tr>
-                    <th>ISBN</th>
-                    <th>Title</th>
-                    <th>Category</th>
-                    <th>Author</th>
-                    <th>Price</th>
-                    <th>Action</th>
-                </tr>
+                    <?php
+                    $i = 1;
+                    while ($row = $result->fetch_object()) :
+                    ?>
+                        <tr>
+                            <td><?= $row->isbn ?></td>
+                            <td><?= $row->title ?></td>
+                            <td><?= $row->category_name ?></td>
+                            <td><?= $row->author ?></td>
+                            <td>$<?= $row->price ?></td>
+                            <td>
+                                <a class="btn btn-warning btn-sm" href="edit_book.php?isbn=<?= $row->isbn ?>">Edit</a>&nbsp;&nbsp;
+                                <a class="btn btn-danger btn-sm" href="confirm_delete_book.php?isbn=<?= $row->isbn ?>">Delete</a>
+                            </td>
+                        </tr>
+                    <?php
+                        $i++;
+                    endwhile;
+                    ?>
 
-                <?php
-                $i = 1;
-                while ($row = $result->fetch_object()) :
-                ?>
-                    <tr>
-                        <td><?= $row->isbn ?></td>
-                        <td><?= $row->title ?></td>
-                        <td><?= $row->category_name ?></td>
-                        <td><?= $row->author ?></td>
-                        <td>$<?= $row->price ?></td>
-                        <td>
-                            <a class="btn btn-warning btn-sm" href="edit_book.php?isbn=<?= $row->isbn ?>">Edit</a>&nbsp;&nbsp;
-                            <a class="btn btn-danger btn-sm" href="confirm_delete_book.php?isbn=<?= $row->isbn ?>">Delete</a>
-                        </td>
-                    </tr>
-                <?php
-                    $i++;
-                endwhile;
-                ?>
-            </table>
-            <br />
-            Total Rows = <?= $result->num_rows ?>
-        <?php else : ?>
-            <p>Book not found!</p>
+                </table>
+                <br />
+                Total Rows = <?= $result->num_rows ?>
+            <?php endif; ?>
         <?php endif; ?>
 
         <?php
