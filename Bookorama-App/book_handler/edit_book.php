@@ -23,12 +23,6 @@ if (!isset($_POST['submit'])) {
 } else {
     $valid = TRUE;
 
-    $isbn = test_input($_POST['isbn']);
-    if ($isbn == '') {
-        $error_isbn = 'ISBN is required';
-        $valid = FALSE;
-    }
-
     $author = test_input($_POST['author']);
     if ($author == '') {
         $error_author = 'Author is required';
@@ -55,8 +49,7 @@ if (!isset($_POST['submit'])) {
 
     if ($valid) {
         $query = "UPDATE books 
-                    SET isbn = '" . $isbn . "', 
-                        author = '" . $author . "',
+                    SET author = '" . $author . "',
                         title = '" . $title . "',
                         price = '" . $price . "',
                         categoryid = (SELECT categoryid FROM categories WHERE name = '" . $category . "')
@@ -81,10 +74,7 @@ if (!isset($_POST['submit'])) {
         <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']) . '?isbn=' . $isbn ?>" method="post" autocomplete="on">
             <div class="form-group">
                 <label for="isbn">ISBN:</label>
-                <input type="text" class="form-control" id="isbn" name="isbn" value="<?= $isbn; ?>">
-                <div class="error">
-                    <?php if (isset($error_isbn)) echo $error_isbn ?>
-                </div>
+                <input type="text" class="form-control" id="isbn" name="isbn" value="<?= $isbn; ?>" disabled>
             </div>
             <div class="form-group">
                 <label for="author">Author:</label>
