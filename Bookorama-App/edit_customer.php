@@ -20,7 +20,6 @@ if (!isset($_POST["submit"])) {
             $city = $row->city;
         }
     }
-
 } else {
     $valid = TRUE;
     $name = ($_POST['name']);
@@ -59,7 +58,6 @@ if (!isset($_POST["submit"])) {
         } else {
             $db->close();
             header('Location: view_customer.php');
-
         }
     }
 }
@@ -77,42 +75,42 @@ if (!isset($_POST["submit"])) {
                 <div class="error">
                     <?php if (isset($error_name))
                         echo $error_name ?>
-                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="name">Address:</label>
-                    <textarea class="form-control" name="address" id="address" rows="5"><?php echo $address; ?></textarea>
+            </div>
+            <div class="form-group">
+                <label for="name">Address:</label>
+                <textarea class="form-control" name="address" id="address" rows="5"><?php echo $address; ?></textarea>
                 <div class="error">
                     <?php if (isset($error_address))
                         echo $error_address ?>
-                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="city">City:</label>
-                    <select name="city" id="city" class="form-control" required>
-                        <option value="none" <?php if (!isset($city))
-                        echo 'selected' ?>>--Select a city--</option>
-                        <option value="Airport West" <?php if (isset($city) && $city == "Airport West")
-                        echo 'selected' ?>>
-                            Airport West</option>
-                        <option value="Box Hill" <?php if (isset($city) && $city == "Box Hill")
-                        echo 'selected' ?>>Box Hill
-                        </option>
-                        <option value="Yarraville" <?php if (isset($city) && $city == "Yarraville")
-                        echo 'selected' ?>>
-                            Yarraville</option>
-                    </select>
-                    <div class="error">
+            </div>
+            <div class="form-group">
+                <label for="city">City:</label>
+                <select name="city" id="city" class="form-control" required>
+                    <option value="none" <?php if (!isset($city))
+                                                echo 'selected' ?>>--Select a city--</option>
+                    <option value="Airport West" <?php if (isset($city) && $city == "Airport West")
+                                                        echo 'selected' ?>>
+                        Airport West</option>
+                    <option value="Box Hill" <?php if (isset($city) && $city == "Box Hill")
+                                                    echo 'selected' ?>>Box Hill
+                    </option>
+                    <option value="Yarraville" <?php if (isset($city) && $city == "Yarraville")
+                                                    echo 'selected' ?>>
+                        Yarraville</option>
+                </select>
+                <div class="error">
                     <?php if (isset($error_city))
                         echo $error_city ?>
-                    </div>
                 </div>
-                <br>
-                <button type="submit" class="btn btn-primary" name="submit" value="submit">Submit</button>
-                <a href="view_customer.php" class="btn btn-secondary">Cancel</a>
-            </form>
-        </div>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary" name="submit" value="submit">Submit</button>
+            <a href="view_customer.php" class="btn btn-secondary">Cancel</a>
+        </form>
     </div>
+</div>
 <?php include('./footer.php') ?>
 <?php
 $db->close();

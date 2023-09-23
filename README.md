@@ -3,6 +3,16 @@
 
 Bookorama is an web application that simplifies book management and borrowing. With Bookorama, users can easily explore an extensive catalog of books, and make reservations.
 
+# To Do
+- [x] Menambahkan tabel categories
+- [x] Menambahkan Foreign key categoryid pada tabel books
+- [x] Membuat halaman web untuk CRUD data buku (perlu double check)
+- [x] membuat halaman untuk pencarian atau filter data buku
+- [ ] Memberi link pada tiap buku pada hasil pencarian untuk menuju halaman detail data buku
+- [ ] Menampilkan data order beserta detail item
+- [ ] Menampilkan rekap data dalam bentuk grafik (masih 1 grafik)
+- [ ] Menampilkan tabel data buku yang di span (tampilan masih buruk)
+
 ## Contributing
 
 Choose one: frontend or backend.
