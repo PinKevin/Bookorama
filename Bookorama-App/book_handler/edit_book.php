@@ -24,25 +24,25 @@ if (!isset($_POST['submit'])) {
     $valid = TRUE;
 
     $author = test_input($_POST['author']);
-    if ($author == '') {
+    if (empty($author)) {
         $error_author = 'Author is required';
         $valid = FALSE;
     }
 
     $title = test_input($_POST['title']);
-    if ($title == '') {
+    if (empty($title)) {
         $error_title = 'Title is required';
         $valid = FALSE;
     }
 
     $price = test_input($_POST['price']);
-    if ($price == '') {
+    if (empty($price)) {
         $error_price = 'Price is required';
         $valid = FALSE;
     }
 
     $category = $_POST['category'] ?? '';
-    if ($category == '') {
+    if (empty($category)) {
         $error_category = 'Category is required';
         $valid = FALSE;
     }
@@ -79,23 +79,23 @@ if (!isset($_POST['submit'])) {
             <div class="form-group">
                 <label for="author">Author:</label>
                 <input type="text" class="form-control" id="author" name="author" value="<?= $author; ?>">
-                <div class="error">
-                    <?php if (isset($error_author)) echo $error_author ?>
-                </div>
+                <?php if (!empty($error_author)) : ?>
+                    <div class="alert alert-danger"><?= $error_author ?></div>
+                <?php endif; ?>
             </div>
             <div class="form-group">
                 <label for="title">Title:</label>
                 <input type="text" class="form-control" id="title" name="title" value="<?= $title; ?>">
-                <div class="error">
-                    <?php if (isset($error_title)) echo $error_title ?>
-                </div>
+                <?php if (!empty($error_title)) : ?>
+                    <div class="alert alert-danger"><?= $error_title ?></div>
+                <?php endif; ?>
             </div>
             <div class="form-group">
                 <label for="price">Price:</label>
                 <input type="number" class="form-control" id="price" name="price" step="0.01" value="<?= $price; ?>">
-                <div class="error">
-                    <?php if (isset($error_price)) echo $error_price ?>
-                </div>
+                <?php if (!empty($error_price)) : ?>
+                    <div class="alert alert-danger"><?= $error_price ?></div>
+                <?php endif; ?>
             </div>
             <div class="form-group">
                 <label for="category">Category:</label>
@@ -119,10 +119,9 @@ if (!isset($_POST['submit'])) {
                     }
                     ?>
                 </select>
-                <div class="error">
-                    <?php if (isset($error_category))
-                        echo $error_category ?>
-                </div>
+                <?php if (!empty($error_category)) : ?>
+                    <div class="alert alert-danger"><?= $error_category ?></div>
+                <?php endif; ?>
             </div>
             <br>
             <button type="submit" class="btn btn-primary" name="submit" value="submit">Submit</button>

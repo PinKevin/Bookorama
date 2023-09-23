@@ -1,37 +1,46 @@
 <?php
 require_once('../lib/db_login.php');
 
+// Inisialisasi pesan error
+$errors = array(
+    'isbn' => '',
+    'author' => '',
+    'title' => '',
+    'price' => '',
+    'category' => ''
+);
+
 if (isset($_POST['submit'])) {
-    $valid = TRUE;
+    $valid = true;
 
     $isbn = test_input($_POST['isbn']);
-    if ($isbn == '') {
-        $error_isbn = 'ISBN is required';
-        $valid = FALSE;
+    if (empty($isbn)) {
+        $errors['isbn'] = 'ISBN is required';
+        $valid = false;
     }
 
     $author = test_input($_POST['author']);
-    if ($author == '') {
-        $error_author = 'Author is required';
-        $valid = FALSE;
+    if (empty($author)) {
+        $errors['author'] = 'Author is required';
+        $valid = false;
     }
 
     $title = test_input($_POST['title']);
-    if ($title == '') {
-        $error_title = 'Title is required';
-        $valid = FALSE;
+    if (empty($title)) {
+        $errors['title'] = 'Title is required';
+        $valid = false;
     }
 
     $price = test_input($_POST['price']);
-    if ($price == '') {
-        $error_price = 'Price is required';
-        $valid = FALSE;
+    if (empty($price)) {
+        $errors['price'] = 'Price is required';
+        $valid = false;
     }
 
     $category = $_POST['category'] ?? '';
-    if ($category == '') {
-        $error_category = 'Category is required';
-        $valid = FALSE;
+    if (empty($category)) {
+        $errors['category'] = 'Category is required';
+        $valid = false;
     }
 
     if ($valid) {
@@ -64,34 +73,30 @@ if (isset($_POST['submit'])) {
             <div class="form-group">
                 <label for="isbn">ISBN:</label>
                 <input type="text" class="form-control" id="isbn" name="isbn">
-                <div class="error">
-                    <?php if (isset($error_isbn))
-                        echo $error_isbn ?>
-                </div>
+                <?php if (!empty($errors['isbn'])) : ?>
+                    <div class="alert alert-danger"><?= $errors['isbn'] ?></div>
+                <?php endif; ?>
             </div>
             <div class="form-group">
                 <label for="author">Author:</label>
                 <input type="text" class="form-control" id="author" name="author">
-                <div class="error">
-                    <?php if (isset($error_author))
-                        echo $error_author ?>
-                </div>
+                <?php if (!empty($errors['author'])) : ?>
+                    <div class="alert alert-danger"><?= $errors['author'] ?></div>
+                <?php endif; ?>
             </div>
             <div class="form-group">
                 <label for="title">Title:</label>
                 <input type="text" class="form-control" id="title" name="title">
-                <div class="error">
-                    <?php if (isset($error_title))
-                        echo $error_title ?>
-                </div>
+                <?php if (!empty($errors['title'])) : ?>
+                    <div class="alert alert-danger"><?= $errors['title'] ?></div>
+                <?php endif; ?>
             </div>
             <div class="form-group">
                 <label for="price">Price:</label>
                 <input type="number" class="form-control" id="price" name="price" step="0.01">
-                <div class="error">
-                    <?php if (isset($error_price))
-                        echo $error_price ?>
-                </div>
+                <?php if (!empty($errors['price'])) : ?>
+                    <div class="alert alert-danger"><?= $errors['price'] ?></div>
+                <?php endif; ?>
             </div>
             <div class="form-group">
                 <label for="category">Category:</label>
@@ -113,10 +118,9 @@ if (isset($_POST['submit'])) {
                     }
                     ?>
                 </select>
-                <div class="error">
-                    <?php if (isset($error_category))
-                        echo $error_category ?>
-                </div>
+                <?php if (!empty($errors['category'])) : ?>
+                    <div class="alert alert-danger"><?= $errors['category'] ?></div>
+                <?php endif; ?>
             </div>
             <br>
             <button type="submit" class="btn btn-primary" name="submit" value="submit">Submit</button>
