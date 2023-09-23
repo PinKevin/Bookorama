@@ -3,6 +3,8 @@
     <div class="card-header">Books Data</div>
     <div class="card-body">
         <a href="add_book.php" class="btn btn-primary mb-4">+ Add Book Data</a>
+        <a href="search_books.php" class="btn btn-success mb-4">Search Books</a>
+        <a href="view_books_by_categories.php" class="btn btn-dark mb-4">View by Categories</a>
         <br>
         <table class="table table-striped">
             <tr>
