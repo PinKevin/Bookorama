@@ -169,4 +169,9 @@ require_once('../lib/db_login.php');
         ?>
     </div>
 </div>
+<script>
+    window.onload = function() {
+        history.replaceState({}, document.title, 'view_books.php');
+    }
+</script>
 <?php include('../footer.php') ?>
