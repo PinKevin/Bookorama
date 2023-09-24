@@ -114,6 +114,8 @@ require_once('../lib/db_login.php');
                         <td><?= $row->author ?></td>
                         <td>$<?= $row->price ?></td>
                         <td>
+                            <a class="btn btn-info btn-sm" href="detail_book.php?isbn=<?= $row->isbn ?>">Detail</a>&nbsp;&nbsp;
+                            <a class="btn btn-primary btn-sm" href="../show_cart.php?isbn=<?= $row->isbn ?>">+ Cart</a>&nbsp;&nbsp;
                             <a class="btn btn-warning btn-sm" href="edit_book.php?isbn=<?= $row->isbn ?>">Edit</a>&nbsp;&nbsp;
                             <a class="btn btn-danger btn-sm" href="confirm_delete_book.php?isbn=<?= $row->isbn ?>">Delete</a>
                         </td>
