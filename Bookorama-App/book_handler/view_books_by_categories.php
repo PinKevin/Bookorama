@@ -2,8 +2,8 @@
 <div class="card mt-5">
     <div class="card-header">Books Data by Category</div>
     <div class="card-body">
-        <table class="table table-striped">
-            <tr>
+        <table class="table table-bordered">
+            <tr class="bg-primary text-white text-center align-middle table-dark">
                 <th>Category</th>
                 <th>ISBN</th>
                 <th>Title</th>
@@ -55,15 +55,15 @@
                 echo '<tr>';
 
                 if (!isset($printed[$category_id])) {
-                    echo '<td rowspan="' . $rowspan . '" valign="middle">' . $category_name . '</td>';
+                    echo '<td rowspan="' . $rowspan . '" class="text-black text-center align-middle">' . $category_name . '</td>';
                     $printed[$category_id] = true;
                 }
 
                 foreach ($books as $book) {
-                    echo '<td>' . $book['isbn'] . '</td>';
+                    echo '<td class="text-center align-middle">' . $book['isbn'] . '</td>';
                     echo '<td>' . $book['title'] . '</td>';
                     echo '<td>' . $book['author'] . '</td>';
-                    echo '<td>' . $book['price'] . '</td>';
+                    echo '<td class="text-center align-middle">' . $book['price'] . '</td>';
                     echo '</tr>';
                 }
             }
