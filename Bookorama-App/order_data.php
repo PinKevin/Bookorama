@@ -12,9 +12,20 @@ if (isset($_GET['id']) && $_GET['id'] != "") {
         $_SESSION['cart'][$id] = 1;
     }
 }
+
+include('./header.php');
+require_once('../Bookorama-App/lib/db_login.php');
+$sum_qty = 0; // Inisialisasi total item di shopping cart
+$sum_price = 0; // Inisialisasi total price di shopping cart
+$order_number = 0; // Inisialisasi nomor order
+
+if (isset($_POST['start_date']) && isset($_POST['end_date'])) {
+    $start_date = $_POST['start_date'];
+    $end_date = $_POST['end_date'];
+}
+
 ?>
 
-<?php include('./header.php') ?>
 <br>
 <div class="card mt-4">
     <div class="card-header">Order Books</div>
@@ -38,22 +49,17 @@ if (isset($_GET['id']) && $_GET['id'] != "") {
             <th>Total</th>
         </tr>
         <?php
-        require_once('../Bookorama-App/lib/db_login.php');
-        $sum_qty = 0; // Inisialisasi total item di shopping cart
-        $sum_price = 0; // Inisialisasi total price di shopping cart
-        $order_number = 0; // Inisialisasi nomor order
-        $order_date = date("Y-m-d");
-        
-        if (isset($_POST['start_date']) && isset($_POST['end_date'])) {
-            foreach ($_SESSION['cart'] as $id => $quantity) {
-                $query = "SELECT * FROM books WHERE isbn='" . $id . "'";
-                $result = $db->query($query);
-                if (!$result) {
-                    die("Could not query the database: <br>" . $db->error . "<br>Query: " . $query);
-                }
-                while ($row = $result->fetch_object()) {
+        foreach ($_SESSION['cart'] as $id => $quantity) {
+            $query = "SELECT * FROM books WHERE isbn='" . $id . "'";
+            $result = $db->query($query);
+            if (!$result) {
+                die("Could not query the database: <br>" . $db->error . "<br>Query: " . $query);
+            }
+            while ($row = $result->fetch_object()) {
+                $order_date = date("Y-m-d");
+                $total_price = $row->price * $quantity;
+                if (!isset($start_date) || !isset($end_date) || ($order_date >= $start_date && $order_date <= $end_date)) {
                     $order_number++;
-                    $total_price = $row->price * $quantity;
                     echo '<tr>';
                     echo '<td>' . $order_number . '</td>';
                     echo '<td>' . $order_date . '</td>';
@@ -72,6 +78,5 @@ if (isset($_GET['id']) && $_GET['id'] != "") {
         }
         ?>
     </table>
-    </div>
     </div>
 </div>
