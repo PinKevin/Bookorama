@@ -84,9 +84,10 @@
         <!--Grafik Data Buku Terorder-->
         <div id="container2"></div>
         <?php
-        $query = "SELECT c.name AS category_name, COUNT(oi.isbn) AS book_count
+        $query = "SELECT c.name AS category_name, SUM(subquery.quantity) AS book_count
                     FROM categories c
-                    LEFT JOIN order_items oi ON c.categoryid = (SELECT categoryid FROM books WHERE isbn = oi.isbn)
+                    LEFT JOIN (SELECT b.categoryid, oi.quantity FROM order_items oi INNER JOIN books b ON oi.isbn = b.isbn) AS subquery
+                    ON c.categoryid = subquery.categoryid
                     GROUP BY c.name
                     ORDER BY c.name;";
         $result = $db->query($query);
