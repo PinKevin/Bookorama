@@ -78,14 +78,14 @@ if (!isset($_POST['submit'])) {
             </div>
             <div class="form-group">
                 <label for="author">Author:</label>
-                <input type="text" class="form-control" id="author" name="author" value="<?= $author; ?>">
+                <input type="text" class="form-control" id="author" name="author" maxlength="50" value="<?= $author; ?>">
                 <?php if (!empty($error_author)) : ?>
                     <div class="alert alert-danger"><?= $error_author ?></div>
                 <?php endif; ?>
             </div>
             <div class="form-group">
                 <label for="title">Title:</label>
-                <input type="text" class="form-control" id="title" name="title" value="<?= $title; ?>">
+                <input type="text" class="form-control" id="title" name="title" maxlength="100" value="<?= $title; ?>">
                 <?php if (!empty($error_title)) : ?>
                     <div class="alert alert-danger"><?= $error_title ?></div>
                 <?php endif; ?>

@@ -92,21 +92,21 @@ if (isset($_POST['submit'])) {
         <form action="add_book.php" method="POST" autocomplete="on">
             <div class="form-group">
                 <label for="isbn">ISBN:</label>
-                <input type="text" class="form-control" id="isbn" name="isbn" value="<?= isset($_POST['isbn']) ? htmlspecialchars($_POST['isbn']) : '' ?>">
+                <input type="text" class="form-control" id="isbn" name="isbn" maxlength="13" value="<?= isset($_POST['isbn']) ? htmlspecialchars($_POST['isbn']) : '' ?>">
                 <?php if (!empty($errors['isbn'])) : ?>
                     <div class="alert alert-danger"><?= $errors['isbn'] ?></div>
                 <?php endif; ?>
             </div>
             <div class="form-group">
                 <label for="author">Author:</label>
-                <input type="text" class="form-control" id="author" name="author" value="<?= isset($_POST['author']) ? htmlspecialchars($_POST['author']) : '' ?>">
+                <input type="text" class="form-control" id="author" name="author" maxlength="50" value="<?= isset($_POST['author']) ? htmlspecialchars($_POST['author']) : '' ?>">
                 <?php if (!empty($errors['author'])) : ?>
                     <div class="alert alert-danger"><?= $errors['author'] ?></div>
                 <?php endif; ?>
             </div>
             <div class="form-group">
                 <label for="title">Title:</label>
-                <input type="text" class="form-control" id="title" name="title" value="<?= isset($_POST['title']) ? htmlspecialchars($_POST['title']) : '' ?>">
+                <input type="text" class="form-control" id="title" name="title" maxlength="100" value="<?= isset($_POST['title']) ? htmlspecialchars($_POST['title']) : '' ?>">
                 <?php if (!empty($errors['title'])) : ?>
                     <div class="alert alert-danger"><?= $errors['title'] ?></div>
                 <?php endif; ?>
