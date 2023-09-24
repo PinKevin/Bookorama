@@ -10,7 +10,7 @@ Bookorama is an web application that simplifies book management and borrowing. W
 - [x] membuat halaman untuk pencarian atau filter data buku
 - [x] Memberi link pada tiap buku pada hasil pencarian untuk menuju halaman detail data buku
 - [x] Menampilkan data order beserta detail item
-- [ ] Menampilkan rekap data dalam bentuk grafik (masih 1 grafik)
+- [X] Menampilkan rekap data dalam bentuk grafik (masih 1 grafik)
 - [x] Menampilkan tabel data buku yang di span
 
 ## Contributing

@@ -83,6 +83,6 @@ if (isset($_POST['start_date']) && isset($_POST['end_date'])) {
                 ?>
             </table>
         <?php endif; ?>
-        <a href="./book_handler/view_books.php" class="btn btn-secondary">Back</a>
+        <a href="./book_handler/view_books.php" class="btn btn-primary">Back</a>
     </div>
 </div>

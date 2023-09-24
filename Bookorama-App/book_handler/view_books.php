@@ -10,6 +10,7 @@ require_once('../lib/db_login.php');
         <a href="../order_data.php" class="btn btn-dark mb-4">Check Order</a>
         <a href="view_books_by_categories.php" class="btn btn-dark mb-4">View by Categories</a>
         <a href="recap_book.php" class="btn btn-dark mb-4">View Books Recap</a>
+        <a href="../logout.php" class="btn btn-danger mb-4 float-right">Logout</a>
         <div class="form-group">
             <form action="view_books.php" method="get">
                 <input type="text" class="form-control mb-2" name="search_key" placeholder="Search your books">

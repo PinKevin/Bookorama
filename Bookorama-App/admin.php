@@ -12,6 +12,7 @@ include('./header.php') ?>
         <p>You are logged in as <b><?php echo $_SESSION['username']; ?></p>
         <br><br>
         <a class="btn btn-primary" href="logout.php">Logout</a>
+        <a class="btn btn-primary" href="./book_handler/view_books.php">Books</a>
     </div>
 </div>
 

@@ -156,7 +156,7 @@
             chart.appendTo('#container2');
         </script>
         <br>
-        <a href="view_books.php" class="btn btn-secondary">Back</a>
+        <a href="view_books.php" class="btn btn-primary">Back</a>
         </form>
     </div>
 </div>
