@@ -37,7 +37,9 @@
             while ($row = $result->fetch_object()) {
                 echo '<tr>';
                 echo '<td>' . $row->isbn . '</td>';
-                echo '<td>' . $row->title . '</td>';
+                echo '<td>';
+                echo '<a href="detail_book.php?isbn=' . $row->isbn . '">' . $row->title . '</a>';
+                echo '</td>';
                 echo '<td>' . $row->category_name . '</td>';
                 echo '<td>' . $row->author . '</td>';
                 echo '<td>' . $row->price . '</td>';
