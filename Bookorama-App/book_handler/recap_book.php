@@ -79,6 +79,82 @@
 
             chart.appendTo('#container');
         </script>
+        <br><br><br><br>
+        
+        <!--Grafik Data Buku Terorder-->
+        <div id="container2"></div>
+        <?php
+        $query = "SELECT c.name AS category_name, COUNT(oi.isbn) AS book_count
+                  FROM categories c
+                  LEFT JOIN order_items oi ON c.categoryid = (SELECT categoryid FROM books WHERE isbn = oi.isbn)
+                  GROUP BY c.name
+                  ORDER BY c.name;";
+        $result = $db->query($query);
+        if (!$result) {
+            die('Could not query the database: <br/>' . $db->error . '<br>Query:' . $query);
+        }
+
+        //array untuk data grafik
+        $data2 = array();
+        while ($row = $result->fetch_assoc()) {
+            $data2[] = array(
+                'category_name' => $row['category_name'],
+                'book_count' => (int)$row['book_count']
+            );
+        }
+
+        //konversi agar bisa digunakan di JS
+        $json_data = json_encode($data2);
+
+        ?>
+        <script>
+            var data2 = <?php echo $json_data; ?>;
+            var categories = [];
+            var bookCounts = [];
+            for (var i = 0; i < data2.length; i++) {
+                categories.push(data2[i].category_name);
+                bookCounts.push(data2[i].book_count);
+            }
+
+            var chart = new ej.charts.Chart({
+                chartArea: {
+                    border: {
+                        width: 0
+                    }
+                },
+                primaryXAxis: {
+                    title: 'Categories', //Sumbu x
+                    valueType: 'Category'
+                },
+                primaryYAxis: {
+                    title: 'Number of Books', //Sumbu y
+                    labelFormat: '{value}', //Tanpa desimal
+                    edgeLabelPlacement: 'Shift',
+                    interval: 1
+                },
+                series: [{
+                    type: 'Column',
+                    dataSource: data2,
+                    xName: 'category_name',
+                    yName: 'book_count',
+                    marker: {
+                        dataLabel: {
+                            visible: true,
+                            position: 'Top',
+                            font: {
+                                fontWeight: '600'
+                            }
+                        }
+                    }
+                }],
+                legendSettings: {
+                    visible: false
+                },
+                title: 'REKAP JUMLAH BUKU YANG TELAH DIORDER'
+            });
+
+            chart.appendTo('#container2');
+        </script>
         <br>
         </form>
     </div>
