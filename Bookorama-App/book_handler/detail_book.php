@@ -158,10 +158,9 @@ if (!isset($_POST['submit'])) {
             <div class="form-group">
                 <label for="author">Write Review:</label>
                 <input type="text" class="form-control" id="review" name="review" value="">
-                <div class="error">
-                    <?php if (isset($error_rev))
-                        echo $error_rev ?>
-                </div>
+                <?php if (!empty($error_rev)) : ?>
+                    <div class="alert alert-danger"><?= $error_rev ?></div>
+                <?php endif; ?>
             </div>
             <br />
             <button type="submit" class="btn btn-primary" name="submit" value="submit">+ Add Review</button>
