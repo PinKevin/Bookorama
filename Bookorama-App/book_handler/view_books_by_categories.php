@@ -72,6 +72,7 @@
             $db->close();
             ?>
         </table>
+        <a href="view_books.php" class="btn btn-primary mb-4">Back</a>
     </div>
 </div>
 <?php include('../footer.php') ?>
