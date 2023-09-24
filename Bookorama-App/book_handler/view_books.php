@@ -7,9 +7,9 @@ require_once('../lib/db_login.php');
     <div class="card-header">Books Data</div>
     <div class="card-body">
         <a href="add_book.php" class="btn btn-primary mb-4">+ Add Book Data</a>
-        <!-- <a href="search_books.php" class="btn btn-success mb-4">Search Books</a> -->
+        <a href="../order_data.php" class="btn btn-dark mb-4">Check Order</a>
         <a href="view_books_by_categories.php" class="btn btn-dark mb-4">View by Categories</a>
-        <a href="recap_book.php" class="btn btn-success mb-4">View Books Recap</a>
+        <a href="recap_book.php" class="btn btn-dark mb-4">View Books Recap</a>
         <div class="form-group">
             <form action="view_books.php" method="get">
                 <input type="text" class="form-control mb-2" name="search_key" placeholder="Search your books">

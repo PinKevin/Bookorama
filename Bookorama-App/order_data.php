@@ -39,44 +39,50 @@ if (isset($_POST['start_date']) && isset($_POST['end_date'])) {
             <button type="submit">Filter</button>
         </form>
         <br>
-        <table class="table table-striped">
-        <tr>
-            <th>No Order</th>
-            <th>Date</th>
-            <th>Detail Item</th>
-            <th>Qty</th>
-            <th>Price</th>
-            <th>Total</th>
-        </tr>
-        <?php
-        foreach ($_SESSION['cart'] as $id => $quantity) {
-            $query = "SELECT * FROM books WHERE isbn='" . $id . "'";
-            $result = $db->query($query);
-            if (!$result) {
-                die("Could not query the database: <br>" . $db->error . "<br>Query: " . $query);
-            }
-            while ($row = $result->fetch_object()) {
-                $order_date = date("Y-m-d");
-                $total_price = $row->price * $quantity;
-                if (!isset($start_date) || !isset($end_date) || ($order_date >= $start_date && $order_date <= $end_date)) {
-                    $order_number++;
-                    echo '<tr>';
-                    echo '<td>' . $order_number . '</td>';
-                    echo '<td>' . $order_date . '</td>';
-                    echo '<td>';
-                    echo '<p>ISBN: ' . $row->isbn . '</p>';
-                    echo '<p>Title: ' . $row->title . '</p>';
-                    echo '<p>Author: ' . $row->author . '</p>';
-                    echo '</td>';
-                    echo '<td>' . $quantity . '</td>';
-                    $price = $row->price;
-                    echo '<td>' . $price . '</td>';
-                    echo '<td>' . $total_price . '</td>';
-                    echo '</tr>';
+
+        <?php if (empty($_SESSION['cart'])) : ?>
+            <p>No order!</p>
+        <?php else : ?>
+            <table class="table table-striped">
+                <tr>
+                    <th>No Order</th>
+                    <th>Date</th>
+                    <th>Detail Item</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+                <?php
+                foreach ($_SESSION['cart'] as $id => $quantity) {
+                    $query = "SELECT * FROM books WHERE isbn='" . $id . "'";
+                    $result = $db->query($query);
+                    if (!$result) {
+                        die("Could not query the database: <br>" . $db->error . "<br>Query: " . $query);
+                    }
+                    while ($row = $result->fetch_object()) {
+                        $order_date = date("Y-m-d");
+                        $total_price = $row->price * $quantity;
+                        if (!isset($start_date) || !isset($end_date) || ($order_date >= $start_date && $order_date <= $end_date)) {
+                            $order_number++;
+                            echo '<tr>';
+                            echo '<td>' . $order_number . '</td>';
+                            echo '<td>' . $order_date . '</td>';
+                            echo '<td>';
+                            echo '<p>ISBN: ' . $row->isbn . '</p>';
+                            echo '<p>Title: ' . $row->title . '</p>';
+                            echo '<p>Author: ' . $row->author . '</p>';
+                            echo '</td>';
+                            echo '<td>' . $quantity . '</td>';
+                            $price = $row->price;
+                            echo '<td>' . $price . '</td>';
+                            echo '<td>' . $total_price . '</td>';
+                            echo '</tr>';
+                        }
+                    }
                 }
-            }
-        }
-        ?>
-    </table>
+                ?>
+            </table>
+        <?php endif; ?>
+        <a href="./book_handler/view_books.php" class="btn btn-secondary">Back</a>
     </div>
 </div>

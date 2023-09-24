@@ -80,15 +80,15 @@
             chart.appendTo('#container');
         </script>
         <br><br><br><br>
-        
+
         <!--Grafik Data Buku Terorder-->
         <div id="container2"></div>
         <?php
         $query = "SELECT c.name AS category_name, COUNT(oi.isbn) AS book_count
-                  FROM categories c
-                  LEFT JOIN order_items oi ON c.categoryid = (SELECT categoryid FROM books WHERE isbn = oi.isbn)
-                  GROUP BY c.name
-                  ORDER BY c.name;";
+                    FROM categories c
+                    LEFT JOIN order_items oi ON c.categoryid = (SELECT categoryid FROM books WHERE isbn = oi.isbn)
+                    GROUP BY c.name
+                    ORDER BY c.name;";
         $result = $db->query($query);
         if (!$result) {
             die('Could not query the database: <br/>' . $db->error . '<br>Query:' . $query);
@@ -152,10 +152,10 @@
                 },
                 title: 'REKAP JUMLAH BUKU YANG TELAH DIORDER'
             });
-
             chart.appendTo('#container2');
         </script>
         <br>
+        <a href="view_books.php" class="btn btn-secondary">Back</a>
         </form>
     </div>
 </div>
