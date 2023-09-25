@@ -1,7 +1,11 @@
 <!--File		: view_customer.php
 	Deskripsi	: menampilkan data customers
 -->
+<<<<<<< HEAD
 <?php include('./header.php') ?>
+=======
+<?php include('../header.php') ?>
+>>>>>>> 4219baddc1779e2bebaed9e6d9bc930ac6a008bb
 <br>
 <div class="card">
 	<div class="card-header">Customers Data</div>
@@ -11,7 +15,11 @@
 
 		<?php
 		// Include our login information
+<<<<<<< HEAD
 		require_once('./lib/db_login.php');
+=======
+		require_once('../lib/db_login.php');
+>>>>>>> 4219baddc1779e2bebaed9e6d9bc930ac6a008bb
 
 		//start transaction
 		$db->autocommit(FALSE);
@@ -22,7 +30,11 @@
 		$customerid = 1;
 		$amount = 300;
 		$date = '2022-06-01';
+<<<<<<< HEAD
 		$orderid = 2000;
+=======
+		$orderid = 1004;
+>>>>>>> 4219baddc1779e2bebaed9e6d9bc930ac6a008bb
 		$books = array(
 			'0-672-31697-8' => 1,
 			'0-672-31769-9' => 2,
@@ -58,4 +70,8 @@
 		?>
 	</div>
 </div>
+<<<<<<< HEAD
 <?php include('./footer.php') ?>
+=======
+<?php include('../footer.php') ?>
+>>>>>>> 4219baddc1779e2bebaed9e6d9bc930ac6a008bb
