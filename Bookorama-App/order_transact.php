@@ -1,11 +1,11 @@
 <!--File				: order_transact.php
 	Date				: 25 September 2023
 	Deskripsi			: file PHP dengan tujuan untuk melakukan SQL Transaction
-	Anggota Kelompok	: 1. Adri Audifirst
-						  2. Emerio Kevin Aryaputra
-						  3. Mahardika Putra Wardhana
-						  4. Mochammad Dzahwan Fadhloly
-						  5. Yusuf Muhammad Najhan
+	Anggota Kelompok	: 1. Adri Audifirst (24060121140152)
+						  2. Emerio Kevin Aryaputra (24060121120012)
+						  3. Mahardika Putra Wardhana (24060121130076)
+						  4. Mochammad Dzahwan Fadhloly (24060121140168)
+						  5. Yusuf Muhammad Najhan (24060121130048)
 -->
 <?php include('./header.php') ?>
 <br>
