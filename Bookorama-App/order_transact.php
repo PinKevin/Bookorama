@@ -22,39 +22,67 @@
 		$customerid = 1;
 		$amount = 300;
 		$date = '2022-06-01';
-		$orderid = 2001;
+		$orderid = 2002;
 		$books = array(
 			'0-672-31697-8' => 1,
 			'0-672-31769-9' => 2,
 			'0-672-31509-2' => 3
 		);
 
-		//
-		$query1 = "INSERT INTO orders VALUES (" . $orderid . ", " . $customerid . ", " . $amount . ", '" . $date . "')";
-		if (!$db->query($query1)) {
-			$query_ok = FALSE;
-			die("Could not query the database: <br />" . $db->error . "<br>Query: " . $query1);
-		}
+		try {
+			// Prepare query1
+			$query1 = "INSERT INTO orders VALUES (?, ?, ?, ?)";
+			$stmt1 = $db->prepare($query1);
 
-		foreach ($books as $isbn => $qty) {
-			$query2 = "INSERT INTO order_items VALUES (" . $orderid . ", '" . $isbn . "', " . $qty . ")";
-			if (!$db->query($query2)) {
+			// Check preparation query1
+			if (!$stmt1) {
 				$query_ok = FALSE;
-				die("Could not query the database: <br />" . $db->error . "<br>Query: " . $query2);
+				throw new Exception("Could not prepare the query1: <br />" . $db->error . "<br>Query: " . $stmt1);
 			}
-		}
 
-		//commit the query
-		if ($query_ok) {
-			$db->commit();
-			echo "Eksekusi berhasil!!!";
-		} else {
+			// Bind param for query1
+			$stmt1->bind_param("iisd", $orderid, $customerid, $amount, $date);
+
+			// Execute query1
+			if (!$stmt1->execute()) {
+				$query_ok = FALSE;
+				throw new Exception("Could not execute query1: <br />" . $stmt1->error . "<br>Query: " . $stmt1);
+			}
+
+			// Prepare query2
+			$stmt2 = $db->prepare("INSERT INTO order_items VALUES (?, ?, ?)");
+
+			// Check preparation query2
+			if (!$stmt2) {
+				$query_ok = FALSE;
+				throw new Exception("Could not prepare the query2: <br />" . $db->error . "<br>Query: " . $stmt2);
+			}
+
+			// Bind param for query2
+			$stmt2->bind_param("isi", $orderid, $isbn, $qty);
+
+			foreach ($books as $isbn => $qty) {
+				if (!$stmt2->execute()) {
+					$query_ok = FALSE;
+					throw new Exception("Could not execute query2: <br />" . $stmt2->error . "<br>Query: " . $stmt2);
+				}
+			}
+
+			if ($query_ok) {
+				$db->commit();
+				echo "Eksekusi berhasil!!!";
+			} else {
+				throw new Exception("Eksekusi Gagal!!!");
+			}
+		} catch (Exception $e) {
 			$db->rollback();
-			echo "Eksekusi Gagal!!!";
+			echo $e->getMessage();
+		} finally {
+			$stmt1->close();
+			$stmt2->close();
+			$db->close();
 		}
 
-		//close connection
-		$db->close();
 		?>
 	</div>
 </div>
