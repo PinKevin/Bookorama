@@ -1,4 +1,6 @@
-<!--File		: view_customer.php
+<!--File		: order_transact.php
+	Kelompok	: 7
+	Date		: 25 September 2023
 	Deskripsi	: menampilkan data customers
 -->
 <?php include('./header.php') ?>
