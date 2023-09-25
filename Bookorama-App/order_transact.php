@@ -22,7 +22,7 @@
 		$customerid = 1;
 		$amount = 300;
 		$date = '2022-06-01';
-		$orderid = 2000;
+		$orderid = 2001;
 		$books = array(
 			'0-672-31697-8' => 1,
 			'0-672-31769-9' => 2,
@@ -58,4 +58,4 @@
 		?>
 	</div>
 </div>
-<?php include('./footer.php') ?>=======<?php include('../footer.php') ?>
+<?php include('./footer.php') ?>
