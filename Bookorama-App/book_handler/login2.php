@@ -16,8 +16,21 @@ if (isset($_POST["submit"])) {
 
 	//insert data into database
 	if ($valid) {
+		//Begin Transaction
+		$db->autocommit(FALSE);
+		$db->begin_transaction();
+		$query_ok = TRUE;
+
 		//Asign a query
-		$stmt = $db->prepare(" SELECT * FROM users WHERE username=? AND password=? ");
+		$query1 = " SELECT * FROM users WHERE username = ? AND password = ? " ;
+		$stmt = $db->prepare($query1);
+
+		//Check for error
+		if (!$stmt) {
+			$query_ok = FALSE;
+			die("Could not query the database: <br />" . $db->error . "<br>Query: " . $query1);
+		}
+
 		$stmt->bind_param("ss", $username, $password);
 		$stmt->execute();
 		$result = $stmt->get_result();
@@ -31,6 +44,16 @@ if (isset($_POST["submit"])) {
 				echo "<br>Login Berhasil";
 			}
 		}
+
+		//commit the query
+		if ($query_ok) {
+			$db->commit();
+			echo "Eksekusi berhasil!!!";
+		} else {
+			$db->rollback();
+			echo "Eksekusi Gagal!!!";
+		}
+
 		//close db connection
 		$stmt->close();
 		$db->close();
