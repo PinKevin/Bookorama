@@ -242,7 +242,7 @@ require_once('../lib/db_login.php');
 </div>
 <script>
     window.onload = function () {
-        history.replaceState({}, document.title, 'view_books.php');
+        history.replaceState({}, document.title, 'view_books_ajax.php');
     }
 </script>
 
